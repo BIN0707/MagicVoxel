@@ -7,9 +7,28 @@ public class VoxelMaker : MonoBehaviour
 {
     public GameObject voxelFactory;
 
+    public int voxelPoolSize = 20;
+    public static List<GameObject> voxelPool = new List<GameObject>();
+    //static = 정적 변수, 유일하다
+
     void Start()
     {
-        
+        for(int i =0; i < voxelPoolSize; i++)
+        {
+            //복셀 생성
+             GameObject voxel = Instantiate(voxelFactory);
+             //생성 시 컬러 변경, 마지막 pdf 타이핑 (과제)
+             //voxel.Rander = 
+
+
+             //복셀 비활성화
+             voxel.SetActive(false);
+
+             //폴에 담기
+             voxelPool.Add(voxel);
+
+        }
+
     }
 
 //Ray : 무형의 시선 , Raycast : 시선을 던지는 것, RaycastHit : 특정 물체에 시선이 닿은 것
@@ -22,11 +41,16 @@ public class VoxelMaker : MonoBehaviour
 
             if(Physics.Raycast(ray, out hitInfo))
             {
-                GameObject voxel = Instantiate(voxelFactory);
-
-                voxel.transform.position = hitInfo.point;
-                //포지션의 정보를 바꿈
-            }
-        }
+                if(voxelPool.Count > 0) //오브젝트 폴 안에 복셀이 있는지 확인인
+                {
+                    GameObject voxel = voxelPool[0]; //폴에서 값을 가져옴
+                    voxel.SetActive(true); //복셀 활성화
+                    voxel.transform.position = hitInfo.point;
+                    //Racast를 통해 얻은 충돌 지점의 위치로 객체를 옮김
+                    voxelPool.RemoveAt(0);
+                }
+             }
+         }
     }
+
 }

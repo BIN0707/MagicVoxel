@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   voxelFactory: {fileID: 7031107138897582178, guid: 2809ddec9903ec14db76beeb7a2d50f9, type: 3}
+  voxelPoolSize: 20
 --- !u!4 &98174932
 Transform:
   m_ObjectHideFlags: 0
@@ -195,7 +196,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 1, g: 0.94623476, b: 0.8392157, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
