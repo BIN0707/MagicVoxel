@@ -19,6 +19,7 @@ public class VoxelMaker : MonoBehaviour
              GameObject voxel = Instantiate(voxelFactory);
              //생성 시 컬러 변경, 마지막 pdf 타이핑 (과제)
              //voxel.Rander = 
+//             voxel.GetComponet
 
 
              //복셀 비활성화
@@ -32,25 +33,41 @@ public class VoxelMaker : MonoBehaviour
     }
 
 //Ray : 무형의 시선 , Raycast : 시선을 던지는 것, RaycastHit : 특정 물체에 시선이 닿은 것
+public float createTime = 0.1f;
+float currentTime = 0;
+
+public Transform crosshair;
+
     void Update()
     {
-        if(Input.GetButtonDown("Fire1"))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hitInfo = new RaycastHit();
+        ARAVRInput.DrawCrosshair(crosshair);
 
-            if(Physics.Raycast(ray, out hitInfo))
+        if (ARAVRInput.Get(ARAVRInput.Button.One))
+        {
+            currentTime += Time.deltaTime;
+            if (currentTime > createTime)
             {
-                if(voxelPool.Count > 0) //오브젝트 폴 안에 복셀이 있는지 확인인
+                Ray ray = new Ray(ARAVRInput.RHandPosition, ARAVRInput.RHandDirection);
+
+                //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hitInfo = new RaycastHit();
+
+                if(Physics.Raycast(ray, out hitInfo))
                 {
-                    GameObject voxel = voxelPool[0]; //폴에서 값을 가져옴
-                    voxel.SetActive(true); //복셀 활성화
-                    voxel.transform.position = hitInfo.point;
-                    //Racast를 통해 얻은 충돌 지점의 위치로 객체를 옮김
-                    voxelPool.RemoveAt(0);
+                    if(voxelPool.Count > 0) //오브젝트 폴 안에 복셀이 있는지 확인인
+                    {
+                        GameObject voxel = voxelPool[0]; //폴에서 값을 가져옴
+                        voxel.SetActive(true); //복셀 활성화
+                        voxel.transform.position = hitInfo.point;
+                        //Racast를 통해 얻은 충돌 지점의 위치로 객체를 옮김
+                        voxelPool.RemoveAt(0);
+                        currentTime = 0;
+                    }
                 }
-             }
-         }
+                
+            }
+
+        }         
     }
 
 }
